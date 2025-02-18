@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Barang</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-5">
+    <h2 class="mb-3 text-center">Tambah Barang</h2>
+    <form action="{{ url_for('barang_controller.create') }}" method="POST" enctype="multipart/form-data" class="p-4 border rounded shadow">
+        <div class="mb-3">
+            <label for="kode" class="form-label">Kode Barang</label>
+            <input type="text" class="form-control" id="kode" name="kode" required>
+        </div>
+        <div class="mb-3">
+            <label for="nama" class="form-label">Nama Barang</label>
+            <input type="text" class="form-control" id="nama" name="nama" required>
+        </div>
+        <div class="mb-3">
+            <label for="jumlah" class="form-label">Jumlah</label>
+            <input type="number" class="form-control" id="jumlah" name="jumlah" required>
+        </div>
+        <div class="mb-3">
+            <label for="kondisi" class="form-label">Kondisi</label>
+            <select class="form-select" id="kondisi" name="kondisi" required>
+                <option value="Bagus">Bagus</option>
+                <option value="Rusak">Rusak</option>
+                <option value="Sedang">Sedang</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="gambar" class="form-label">Upload Gambar</label>
+            <input type="file" class="form-control" id="gambar" name="gambar" accept="image/*" required>
+        </div>
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="boleh_dipinjam" name="boleh_dipinjam">
+            <label class="form-check-label" for="boleh_dipinjam">Boleh Dipinjam</label>
+        </div>
+        <button type="submit" class="btn btn-success">Simpan</button>
+        <a href="{{ url_for('barang_controller.index') }}" class="btn btn-secondary">Kembali ke Daftar Barang</a>
+    </form>
+</body>
+</html>
