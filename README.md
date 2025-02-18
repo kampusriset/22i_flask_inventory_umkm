@@ -1,0 +1,1 @@
+# 22i_flask_inventory_umkm
