@@ -206,3 +206,5 @@ class Peminjam:
         db.cursor.execute("DELETE FROM barang WHERE kode = %s", (id_peminjam,))
         db.connection.commit()
         db.close()
+        
+        
