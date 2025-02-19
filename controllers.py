@@ -1,5 +1,5 @@
 from flask import Blueprint, flash, render_template, request, redirect, session, url_for
-from models import Barang, Database, User
+from models import Barang, Database, User, Peminjam
 
 barang_controller = Blueprint('barang_controller', __name__)
 
@@ -119,3 +119,26 @@ def change_password():
             flash('Old password is incorrect', 'error')
     
     return render_template('change_password.html')
+
+@barang_controller.route('/peminjam', methods=['GET', 'POST'])
+def kelola_peminjam():
+    if request.method == 'POST':
+        nm_peminjam = request.form['nama_peminjam']
+        nm_brg = request.form['nama_barang_dipinjam']
+        jml_brg = request.form['jumlah_barang_dipinjam']
+        nmr_telp = request.form['nomor_telepon']
+        identitas = request.files['identitas'].filename
+        tgl_pinjam = request.form['tanggal_pinjam']
+        tgl_kembali = request.form['tanggal_kembali']
+        new_peminjam = Peminjam(nm_peminjam, nm_brg, jml_brg, nmr_telp, identitas, tgl_pinjam, tgl_kembali)
+        Peminjam.create_peminjam(new_peminjam)
+
+    
+    barang_tersedia = Barang.get_barang_tersedia() 
+    data_peminjam = Peminjam.get_all_peminjam()
+    return render_template('peminjam.html',barang_tersedia = barang_tersedia, list_peminjam = data_peminjam)
+    
+@barang_controller.route('/selesai_pinjam/<string:id_peminjam>', methods=['POST'])
+def selesai_pinjam(id_peminjam):
+    Peminjam.selesai_pinjam(id_peminjam)
+    return redirect(url_for('barang_controller.peminjam'))

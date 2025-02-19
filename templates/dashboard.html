@@ -1,80 +1,67 @@
-<!DOCTYPE html>
-<html lang="id">
+{% extends "base.html" %} {% block title %} Dashboard {% endblock title %} {% block content %}
+<div class="container mt-5">
+  <h2 class="text-center mb-4">📦 Inventory Barang UKM Amikom</h2>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</head>
+  <!-- Greeting -->
+  <div class="alert alert-primary text-center" role="alert">Hai, <strong>{{ username }}</strong> 👋 Selamat datang di Inventory UKM!</div>
 
-<body class="container mt-5">
-    <h2 class="text-center mb-4">📦 Inventory Barang UKM Amikom</h2>
-
-    <!-- Greeting -->
-    <div class="alert alert-primary text-center" role="alert">
-        Hai, <strong>{{ username }}</strong> 👋 Selamat datang di Inventory UKM!
+  <!-- Ringkasan Data -->
+  <div class="row text-center mb-4">
+    <div class="col-md-4">
+      <div class="card shadow-sm border-primary">
+        <div class="card-body">
+          <h5 class="card-title">Total Barang</h5>
+          <p class="fs-3 fw-bold text-primary">{{ total_barang }}</p>
+        </div>
+      </div>
     </div>
-
-    <!-- Ringkasan Data -->
-    <div class="row text-center mb-4">
-        <div class="col-md-4">
-            <div class="card shadow-sm border-primary">
-                <div class="card-body">
-                    <h5 class="card-title">Total Barang</h5>
-                    <p class="fs-3 fw-bold text-primary">{{ total_barang }}</p>
-                </div>
-            </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm border-success">
+        <div class="card-body">
+          <h5 class="card-title">Barang Tersedia</h5>
+          <p class="fs-3 fw-bold text-success">{{ barang_tersedia }}</p>
         </div>
-        <div class="col-md-4">
-            <div class="card shadow-sm border-success">
-                <div class="card-body">
-                    <h5 class="card-title">Barang Tersedia</h5>
-                    <p class="fs-3 fw-bold text-success">{{ barang_tersedia }}</p>
-                </div>
-            </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm border-danger">
+        <div class="card-body">
+          <h5 class="card-title">Barang Dipinjam</h5>
+          <p class="fs-3 fw-bold text-danger">{{ barang_dipinjam }}</p>
         </div>
-        <div class="col-md-4">
-            <div class="card shadow-sm border-danger">
-                <div class="card-body">
-                    <h5 class="card-title">Barang Dipinjam</h5>
-                    <p class="fs-3 fw-bold text-danger">{{ barang_dipinjam }}</p>
-                </div>
-            </div>
-        </div>
+      </div>
+    </div>
 
     <!-- Tabel Barang -->
     <h2>📌 Barang yang Sedang Dipinjam</h2>
     <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Kode</th>
-                <th>Nama</th>
-                <th>Jumlah</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for barang in barangs %}
-            <tr>
-                <td>{{ barang[1] }}</td>
-                <td>{{ barang[2] }}</td>
-                <td>{{ barang[3] }}</td>
-                <td>{{ barang[7] }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
+      <thead>
+        <tr>
+          <th>Kode</th>
+          <th>Nama</th>
+          <th>Jumlah</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for barang in barangs %}
+        <tr>
+          <td>{{ barang[1] }}</td>
+          <td>{{ barang[2] }}</td>
+          <td>{{ barang[3] }}</td>
+          <td>{{ barang[7] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
     </table>
+  </div>
 
-    </div>
-
-    <!-- Tombol Navigasi -->
-    <div class="d-flex justify-content-between mt-4">
-        <a href="{{ url_for('barang_controller.index') }}" class="btn btn-secondary">📄 Lihat Semua Barang</a>
-        <a href="{{ url_for('barang_controller.create') }}" class="btn btn-primary">➕ Tambah Barang</a>
-        <a href="/logout" class="btn btn-danger">Logout</a>
-    </div>
-</body>
-
-</html>
+  <!-- Tombol Navigasi -->
+  <div class="d-flex justify-content-between mt-4">
+    <a href="{{ url_for('barang_controller.index') }}" class="btn btn-secondary">📄 Lihat Semua Barang</a>
+    <a href="{{ url_for('barang_controller.create') }}" class="btn btn-primary">➕ Tambah Barang</a>
+    <a href="{{ url_for('barang_controller.kelola_peminjam') }}" class="btn btn-primary">♻️ Kelola Peminjam</a>
+    <a href="/logout" class="btn btn-danger">Logout</a>
+  </div>
+</div>
+{% endblock content %}

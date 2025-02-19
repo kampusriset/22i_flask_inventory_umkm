@@ -1,48 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %} {% block title %} InKom {% endblock title %} {% block head %}
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect" />
+<link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Nunito:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
-<head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>InKom</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
+<!-- Vendor CSS Files -->
+<link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
+<link href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet" />
+<link href="{{ url_for('static', filename='vendor/aos/aos.css') }}" rel="stylesheet" />
+<link href="{{ url_for('static', filename='vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet" />
+<link href="{{ url_for('static', filename='vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet" />
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Nunito:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
-  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-  <link href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
-  <link href="{{ url_for('static', filename='vendor/aos/aos.css') }}" rel="stylesheet">
-  <link href="{{ url_for('static', filename='vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
-  <link href="{{ url_for('static', filename='vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
-
-  <!-- Main CSS File -->
-  <link href="{{ url_for('static', filename='css/landing-page.css') }}" rel="stylesheet">
-</head>
-
-<body class="index-page">
-
+<!-- Main CSS File -->
+<link href="{{ url_for('static', filename='css/landing-page.css') }}" rel="stylesheet" />
+{% endblock head %} {% block content %}
+<div class="index-page">
   <header id="header" class="header d-flex align-items-center fixed-top">
     <div class="container-fluid container-xl position-relative d-flex align-items-center">
       <a href="{{ url_for('barang_controller.landing_page') }}" class="logo d-flex align-items-center me-auto">
-
-        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="">
+        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="" />
         <!-- <h1 class="sitename">InKom</h1> -->
       </a>
 
       <a class="btn-getstarted flex-md-shrink-0" href="{{ url_for('barang_controller.login') }}">Login</a>
-
     </div>
   </header>
   <main class="main">
-
     <!-- bumper Section -->
     <section id="bumper" class="bumper section">
-
       <div class="container">
         <div class="row gy-4">
           <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center">
@@ -53,116 +38,115 @@
             </div>
           </div>
           <div class="col-lg-6 order-1 order-lg-2 bumper-img" data-aos="zoom-out">
-            <img src="{{ url_for('static', filename='img/bumper-img.png') }}" class="img-fluid animated" alt="">
+            <img src="{{ url_for('static', filename='img/bumper-img.png') }}" class="img-fluid animated" alt="" />
           </div>
         </div>
       </div>
+    </section>
+    <!-- /bumper Section -->
 
-    </section><!-- /bumper Section -->
+    <!-- Team Section -->
+    <section id="team" class="team section">
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Team</h2>
+        <p>Our working team</p>
+      </div>
+      <!-- End Section Title -->
 
- <!-- Team Section -->
- <section id="team" class="team section">
+      <div class="container">
+        <div class="row gy-4">
+          <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
+            <div class="team-member">
+              <div class="member-img">
+                <!-- <img src="assets/img/team/team-1.jpg" class="img-fluid" alt=""> -->
+                <img src="{{ url_for('static', filename='img/team/team1.jpg') }}" class="img-fluid" alt="" />
 
-  <!-- Section Title -->
-  <div class="container section-title" data-aos="fade-up">
-    <h2>Team</h2>
-    <p>Our working team</p>
-  </div><!-- End Section Title -->
-
-  <div class="container">
-
-    <div class="row gy-4">
-
-      <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
-        <div class="team-member">
-          <div class="member-img">
-            <!-- <img src="assets/img/team/team-1.jpg" class="img-fluid" alt=""> -->
-            <img src="{{ url_for('static', filename='img/team/team1.jpg') }}" class="img-fluid" alt="">
-
-            <div class="social">
-              <a href=""><i class="bi bi-twitter-x"></i></a>
-              <a href=""><i class="bi bi-facebook"></i></a>
-              <a href=""><i class="bi bi-instagram"></i></a>
-              <a href=""><i class="bi bi-linkedin"></i></a>
+                <div class="social">
+                  <a href=""><i class="bi bi-twitter-x"></i></a>
+                  <a href=""><i class="bi bi-facebook"></i></a>
+                  <a href=""><i class="bi bi-instagram"></i></a>
+                  <a href=""><i class="bi bi-linkedin"></i></a>
+                </div>
+              </div>
+              <div class="member-info">
+                <h4>Yasir Gass</h4>
+                <span>Chief Executive Officer</span>
+                <p>leader with a clear vision. Dengan kepemimpinan yang inspiring, dia membawa tim dan perusahaan mencapai goals yang luar biasa.</p>
+              </div>
             </div>
           </div>
-          <div class="member-info">
-            <h4>Yasir Gass</h4>
-            <span>Chief Executive Officer</span>
-            <p>leader with a clear vision. Dengan kepemimpinan yang inspiring, dia membawa tim dan perusahaan mencapai goals yang luar biasa.</p>
-          </div>
-        </div>
-      </div><!-- End Team Member -->
+          <!-- End Team Member -->
 
-      <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
-        <div class="team-member">
-          <div class="member-img">
-            <img src="{{ url_for('static', filename='img/team/team2.jpg') }}" class="img-fluid" alt="">
-            <div class="social">
-              <a href=""><i class="bi bi-twitter-x"></i></a>
-              <a href=""><i class="bi bi-facebook"></i></a>
-              <a href=""><i class="bi bi-instagram"></i></a>
-              <a href=""><i class="bi bi-linkedin"></i></a>
+          <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
+            <div class="team-member">
+              <div class="member-img">
+                <img src="{{ url_for('static', filename='img/team/team2.jpg') }}" class="img-fluid" alt="" />
+                <div class="social">
+                  <a href=""><i class="bi bi-twitter-x"></i></a>
+                  <a href=""><i class="bi bi-facebook"></i></a>
+                  <a href=""><i class="bi bi-instagram"></i></a>
+                  <a href=""><i class="bi bi-linkedin"></i></a>
+                </div>
+              </div>
+              <div class="member-info">
+                <h4>Ade Kaelvyn</h4>
+                <span>Product Manager</span>
+                <p>a problem-solver who turns ideas into reality. Dengan kreativitas dan strategic thinking, dia selalu provide produk yang impactful dan user-friendly.</p>
+              </div>
             </div>
           </div>
-          <div class="member-info">
-            <h4>Ade Kaelvyn</h4>
-            <span>Product Manager</span>
-            <p>a problem-solver who turns ideas into reality. Dengan kreativitas dan strategic thinking, dia selalu provide produk yang impactful dan user-friendly.</p>
-          </div>
-        </div>
-      </div><!-- End Team Member -->
+          <!-- End Team Member -->
 
-      <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="300">
-        <div class="team-member">
-          <div class="member-img">
-            <!-- <img src="assets/img/team/team-3.jpg" class="img-fluid" alt=""> -->
-            <img src="{{ url_for('static', filename='img/team/team3.jpg') }}" class="img-fluid" alt="">
+          <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="300">
+            <div class="team-member">
+              <div class="member-img">
+                <!-- <img src="assets/img/team/team-3.jpg" class="img-fluid" alt=""> -->
+                <img src="{{ url_for('static', filename='img/team/team3.jpg') }}" class="img-fluid" alt="" />
 
-            <div class="social">
-              <a href=""><i class="bi bi-twitter-x"></i></a>
-              <a href=""><i class="bi bi-facebook"></i></a>
-              <a href=""><i class="bi bi-instagram"></i></a>
-              <a href=""><i class="bi bi-linkedin"></i></a>
+                <div class="social">
+                  <a href=""><i class="bi bi-twitter-x"></i></a>
+                  <a href=""><i class="bi bi-facebook"></i></a>
+                  <a href=""><i class="bi bi-instagram"></i></a>
+                  <a href=""><i class="bi bi-linkedin"></i></a>
+                </div>
+              </div>
+              <div class="member-info">
+                <h4>Anggie Susvira</h4>
+                <span>CTO</span>
+                <p>the tech visionary behind the company. Dengan expertise-nya, dia memastikan setiap inovasi berjalan lancar dan sesuai dengan visi perusahaan.</p>
+              </div>
             </div>
           </div>
-          <div class="member-info">
-            <h4>Anggie Susvira</h4>
-            <span>CTO</span>
-            <p>the tech visionary behind the company. Dengan expertise-nya, dia memastikan setiap inovasi berjalan lancar dan sesuai dengan visi perusahaan.</p>
-          </div>
-        </div>
-      </div><!-- End Team Member -->
+          <!-- End Team Member -->
 
-      <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="400">
-        <div class="team-member">
-          <div class="member-img">
-            <!-- <img src="assets/img/team/team-4.jpg" class="img-fluid" alt=""> -->
-            <img src="{{ url_for('static', filename='img/team/team4.jpg') }}" class="img-fluid" alt="">
-            <div class="social">
-              <a href=""><i class="bi bi-twitter-x"></i></a>
-              <a href=""><i class="bi bi-facebook"></i></a>
-              <a href=""><i class="bi bi-instagram"></i></a>
-              <a href=""><i class="bi bi-linkedin"></i></a>
+          <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="400">
+            <div class="team-member">
+              <div class="member-img">
+                <!-- <img src="assets/img/team/team-4.jpg" class="img-fluid" alt=""> -->
+                <img src="{{ url_for('static', filename='img/team/team4.jpg') }}" class="img-fluid" alt="" />
+                <div class="social">
+                  <a href=""><i class="bi bi-twitter-x"></i></a>
+                  <a href=""><i class="bi bi-facebook"></i></a>
+                  <a href=""><i class="bi bi-instagram"></i></a>
+                  <a href=""><i class="bi bi-linkedin"></i></a>
+                </div>
+              </div>
+              <div class="member-info">
+                <h4>Renno Arth</h4>
+                <span>Accountant</span>
+                <p>the master of numbers. Dengan ketelitian dan dedikasi, dia menjaga keuangan perusahaan tetap solid dan terorganisir dengan baik.</p>
+              </div>
             </div>
           </div>
-          <div class="member-info">
-            <h4>Renno Arth</h4>
-            <span>Accountant</span>
-            <p>the master of numbers. Dengan ketelitian dan dedikasi, dia menjaga keuangan perusahaan tetap solid dan terorganisir dengan baik.</p>
-          </div>
+          <!-- End Team Member -->
         </div>
-      </div><!-- End Team Member -->
-
-    </div>
-
-  </div>
-
-</section><!-- /Team Section -->
+      </div>
+    </section>
+    <!-- /Team Section -->
   </main>
 
   <footer id="footer" class="footer">
-
     <div class="container footer-top">
       <div class="row gy-4">
         <div class="col-lg-4 col-md-6 footer-about">
@@ -187,14 +171,12 @@
             <a href=""><i class="bi bi-linkedin"></i></a>
           </div>
         </div>
-
       </div>
     </div>
 
     <div class="container copyright text-center mt-4">
       <p>© <span>2025 Copyright</span> <strong class="px-1 sitename">Inkom.</strong> <span> All Rights Reserved</span></p>
     </div>
-
   </footer>
 
   <!-- Scroll Top -->
@@ -212,6 +194,5 @@
 
   <!-- Main JS File -->
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-</body>
-
-</html>
+</div>
+{% endblock content %}

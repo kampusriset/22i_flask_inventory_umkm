@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update Barang</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="container mt-5">
+{% extends "base.html" %} {% block title %} Update Barang {% endblock title %} {% block content %}
+<div class="container mt-5 mb-5">
     <h2>Update Barang</h2>
     <form action="{{ url_for('barang_controller.update', kode=barang[1]) }}" method="POST" enctype="multipart/form-data">
         <div class="mb-3">
@@ -50,5 +43,5 @@
         <button type="submit" class="btn btn-success">Update</button>
         <a href="{{ url_for('barang_controller.index') }}" class="btn btn-secondary">Batal</a>
     </form>
-</body>
-</html>
+</div>
+{% endblock content %}

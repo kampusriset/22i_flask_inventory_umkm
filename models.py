@@ -5,6 +5,7 @@ class Database:
     def __init__(self):
         self.connection = MySQLdb.connect(
             host='localhost',
+            port=3308,
             user='root',
             password='',
             database='inventory_ukm'
@@ -14,6 +15,14 @@ class Database:
     def close(self):
         self.cursor.close()
         self.connection.close()
+    
+    def fetch_as_dict(self, query):
+        self.cursor.execute(query)
+        rows = self.cursor.fetchall()
+        column_names = [desc[0] for desc in self.cursor.description]
+        
+        result = [dict(zip(column_names, row)) for row in rows]
+        return result
 
 class Barang:
     def __init__(self, kode, nama, jumlah, kondisi, gambar, boleh_dipinjam, status="Tersedia"):
@@ -93,6 +102,14 @@ class Barang:
         barangs = db.cursor.fetchall()
         db.close()
         return barangs
+    
+    @staticmethod
+    def get_barang_tersedia():
+        db = Database()
+        query = "SELECT * FROM barang WHERE status = 'Tersedia' AND jumlah > 0"
+        data = db.fetch_as_dict(query)
+        db.close()
+        return data
 
 
 class User:
@@ -140,5 +157,53 @@ class User:
             "UPDATE pengguna SET password_hash = %s WHERE username = %s",
             (password_hash, username)
         )
+        db.connection.commit()
+        db.close()
+
+class Peminjam:
+    def __init__(self, nm_peminjam, nm_brg, jml_brg, nmr_telp, identitas, tgl_pinjam, tgl_kembali):
+        self.nm_peminjam = nm_peminjam
+        self.nm_brg = nm_brg
+        self.jml_brg = jml_brg
+        self.nmr_telp = nmr_telp
+        self.identitas = identitas
+        self.tgl_pinjam = tgl_pinjam
+        self.tgl_kembali = tgl_kembali
+    
+    @staticmethod
+    def get_all_peminjam():
+        db = Database()
+        list_peminjam = db.fetch_as_dict("SELECT * FROM peminjam")
+        db.close()
+        return list_peminjam
+    
+    @staticmethod
+    def get_peminjam(id_peminjam):
+        db = Database()
+        db.cursor.execute("SELECT * FROM peminjam WHERE id_peminjam = %s", (id_peminjam))
+        peminjam = db.cursor.fetchone()
+        db.close()
+        return peminjam
+
+    @staticmethod
+    def create_peminjam(peminjam):
+        db = Database()
+        db.cursor.execute("INSERT INTO peminjam (nama_peminjam, nama_barang_dipinjam, jumlah_barang_dipinjam, nomor_telepon, identitas, tanggal_pinjam, tanggal_kembali) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                          (peminjam.nm_peminjam, peminjam.nm_brg, peminjam.jml_brg, peminjam.nmr_telp, peminjam.identitas, peminjam.tgl_pinjam, peminjam.tgl_kembali))
+        db.connection.commit()
+        db.close()
+
+    @staticmethod
+    def update_peminjam(id_peminjam, peminjam):
+        db = Database()
+        db.cursor.execute("UPDATE peminjam SET nama = %s, jumlah = %s, kondisi = %s, gambar = %s, boleh_dipinjam = %s, status = %s WHERE kode = %s",
+                          (peminjam.nama, peminjam.jumlah, peminjam.kondisi, peminjam.gambar, peminjam.boleh_dipinjam, peminjam.status, kode))
+        db.connection.commit()
+        db.close()
+
+    @staticmethod
+    def selesai_pinjam(id_peminjam):
+        db = Database()
+        db.cursor.execute("DELETE FROM barang WHERE kode = %s", (id_peminjam,))
         db.connection.commit()
         db.close()
