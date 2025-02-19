@@ -1,6 +1,11 @@
 # Flask Inventory UMKM
 
-A Flask-based inventory management system for small and medium enterprises (SMEs).
+Sistem manajemen inventaris berbasis Flask untuk mengelola barang dengan lebih akurat, mudah untuk proses pengadaan dan pengelolaan stock.
+
+- User-Friendly Dashboard: A clean to view inventory statistics at a glance.
+- CRUD Operations: Easily add, update, or remove items from the inventory.
+- Borrow Management: Track items that are currently borrowed and manage their status.
+
 
 ## Features
 
@@ -8,6 +13,13 @@ A Flask-based inventory management system for small and medium enterprises (SMEs
 ✅ **Item Management**: Add, edit, delete, and view items  
 ✅ **Item Status**: Update loaned item status  
 ✅ **Dashboard**: Display borrowed items  
+
+# Our Team
+
+- Bayu Ade          (2213010496)
+- M. reno           (2213010493)
+- Yasir Galuh       (2213010482)
+- Anggi Susanti     (2213010502)
 
 ## Technologies Used
 
