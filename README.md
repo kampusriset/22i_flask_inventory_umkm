@@ -9,7 +9,7 @@ A Flask-based inventory management system for small and medium enterprises (SMEs
 ✅ **Item Status**: Update loaned item status  
 ✅ **Dashboard**: Display borrowed items  
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 - Python (Flask)  
 - SQLite/MySQL  

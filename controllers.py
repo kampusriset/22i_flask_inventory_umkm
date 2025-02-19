@@ -4,6 +4,10 @@ from models import Barang, Database, User
 barang_controller = Blueprint('barang_controller', __name__)
 
 @barang_controller.route('/')
+def landing_page():
+    return render_template('landing-page.html')
+
+@barang_controller.route('/dashboard')
 def dashboard():
     """Dashboard hanya menampilkan barang yang dipinjam."""
     if 'username' not in session:
@@ -75,7 +79,7 @@ def login():
             session['username'] = username
             return redirect(url_for('barang_controller.dashboard'))
         else:
-            flash('Invalid credentials', 'error')
+            flash('Periksa lagi username dan password', 'error')
     
     return render_template('login.html')
 
@@ -83,7 +87,7 @@ def login():
 def logout():
     """User logout route."""
     session.pop('username', None)
-    return redirect(url_for('barang_controller.login'))
+    return redirect(url_for('barang_controller.landing_page'))
 
 @barang_controller.route('/register', methods=['GET', 'POST'])
 def register():
