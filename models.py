@@ -16,7 +16,7 @@ class Database:
         self.connection.close()
 
 class Barang:
-    def __init__(self, kode, nama, jumlah, kondisi, gambar, boleh_dipinjam, status):
+    def __init__(self, kode, nama, jumlah, kondisi, gambar, boleh_dipinjam, status="Tersedia"):
         self.kode = kode
         self.nama = nama
         self.jumlah = jumlah
@@ -71,6 +71,28 @@ class Barang:
         data = db.cursor.fetchall()
         db.close()
         return data
+    
+    @staticmethod
+    def pinjam_barang(kode, jumlah, peminjam):
+        db = Database()
+        # Kurangi jumlah barang
+        db.cursor.execute("UPDATE barang SET jumlah = jumlah - %s WHERE kode = %s AND jumlah >= %s", (jumlah, kode, jumlah))
+        if db.cursor.rowcount > 0:
+            # Simpan data peminjaman jika barang tersedia
+            db.cursor.execute(
+                "INSERT INTO pinjam (kode_barang, jumlah, peminjam, status) VALUES (%s, %s, %s, 'Dipinjam')",
+                (kode, jumlah, peminjam)
+            )
+            db.connection.commit()
+        db.close()
+        
+    @staticmethod
+    def get_barang_dipinjam():
+        db = Database()
+        db.cursor.execute("SELECT * FROM pinjam WHERE status = 'Dipinjam'")
+        barangs = db.cursor.fetchall()
+        db.close()
+        return barangs
 
 
 class User:

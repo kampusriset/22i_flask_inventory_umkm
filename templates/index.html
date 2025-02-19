@@ -16,9 +16,14 @@
         <a href="{{ url_for('barang_controller.create') }}" class="btn btn-primary">➕ Tambah Barang</a>
     </div>
 
+    <!-- Input Pencarian -->
+    <div class="mb-3">
+        <input type="text" id="searchInput" class="form-control" placeholder="Cari barang berdasarkan kode atau nama..." onkeyup="searchTable()">
+    </div>
+
     <!-- Tabel Barang -->
     <div class="table-responsive">
-        <table class="table table-striped table-bordered">
+        <table class="table table-striped table-bordered" id="barangTable">
             <thead class="table-dark text-center">
                 <tr>
                     <th>Kode</th>
@@ -28,14 +33,15 @@
                     <th>Gambar</th>
                     <th>Status</th>
                     <th>Aksi</th>
+                    <th>Pinjam</th>
                 </tr>
             </thead>
             <tbody>
                 {% for barang in barangs %}
                 <tr>
-                    <td class="text-center">{{ barang[1] }}</td>
-                    <td>{{ barang[2] }}</td>
-                    <td class="text-center">{{ barang[3] }}</td>
+                    <td class="text-center barang-kode">{{ barang[1] }}</td>
+                    <td class="barang-nama">{{ barang[2] }}</td>
+                    <td class="text-center" id="jumlah_{{ barang[1] }}">{{ barang[3] }}</td>
                     <td>{{ barang[4] }}</td>
                     <td class="text-center">
                         <img src="{{ barang[5] }}" alt="Gambar Barang" class="img-thumbnail" width="50">
@@ -51,11 +57,68 @@
                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus barang ini?')">🗑️ Hapus</button>
                         </form>
                     </td>
+                    <td class="text-center">
+                        <form action="/pinjam" method="POST">
+                            <input type="hidden" name="kode" value="{{ barang[1] }}">
+                            <input type="number" name="jumlah" min="1" max="{{ barang[3] }}" required>
+                            <button type="submit" class="btn btn-primary btn-sm">📥 Pinjam</button>
+                        </form>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
 
+    <!-- Navigasi Halaman -->
+    <div class="d-flex justify-content-center mt-3">
+        <button id="prevPage" class="btn btn-secondary me-2" onclick="changePage(-1)">⬅️ Sebelumnya</button>
+        <span id="pageNumber" class="align-self-center">1</span>
+        <button id="nextPage" class="btn btn-secondary ms-2" onclick="changePage(1)">Selanjutnya ➡️</button>
+    </div>
+
+    <script>
+        let currentPage = 1;
+        const rowsPerPage = 10;
+        
+        function showPage(page) {
+            let rows = document.querySelectorAll("#barangTable tbody tr");
+            let totalRows = rows.length;
+            let totalPages = Math.ceil(totalRows / rowsPerPage);
+            
+            if (page < 1) page = 1;
+            if (page > totalPages) page = totalPages;
+            
+            rows.forEach((row, index) => {
+                row.style.display = (index >= (page - 1) * rowsPerPage && index < page * rowsPerPage) ? "" : "none";
+            });
+            
+            document.getElementById("pageNumber").textContent = page;
+            document.getElementById("prevPage").disabled = (page === 1);
+            document.getElementById("nextPage").disabled = (page === totalPages);
+            
+            currentPage = page;
+        }
+        
+        function changePage(step) {
+            showPage(currentPage + step);
+        }
+
+        function searchTable() {
+            let input = document.getElementById("searchInput").value.toLowerCase();
+            let rows = document.querySelectorAll("#barangTable tbody tr");
+            
+            rows.forEach(row => {
+                let kodeBarang = row.querySelector(".barang-kode").textContent.toLowerCase();
+                let namaBarang = row.querySelector(".barang-nama").textContent.toLowerCase();
+                let isVisible = kodeBarang.includes(input) || namaBarang.includes(input);
+                row.style.display = isVisible ? "" : "none";
+            });
+        }
+        
+        document.addEventListener("DOMContentLoaded", () => {
+            showPage(currentPage);
+        });
+    </script>
 </body>
 </html>
