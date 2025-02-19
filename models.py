@@ -5,7 +5,6 @@ class Database:
     def __init__(self):
         self.connection = MySQLdb.connect(
             host='localhost',
-            port=3308,
             user='root',
             password='',
             database='inventory_ukm'
