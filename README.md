@@ -27,6 +27,11 @@ Sistem manajemen inventaris berbasis Flask untuk mengelola barang dengan lebih a
 - SQLite/MySQL  
 - Bootstrap (for UI)  
 
+## Flowchart
+
+<img src="static/img/pl.png" alt="Flowchart">
+
+
 ## Installation & Configuration
 
 ### 1. Clone this repository
