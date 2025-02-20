@@ -17,7 +17,7 @@ def dashboard():
     total_barang_tersedia = Barang.get_total_barang_tersedia()[0]['total_barang_tersedia']
     total_barang_dipinjam = Barang.get_barang_dipinjam()[0]['barang_dipinjam']
     barang_dipinjam = Barang.get_barang_by_status("Dipinjam")
-    return render_template('dashboard.html', total_jenis=total_jenis, barang_tersedia=total_barang_tersedia, barang_dipinjam=total_barang_dipinjam, barangs = barang_dipinjam)
+    return render_template('dashboard.html', username=session['username'], total_jenis=total_jenis, barang_tersedia=total_barang_tersedia, barang_dipinjam=total_barang_dipinjam, barangs = barang_dipinjam)
 
 
 @barang_controller.route('/barang')
