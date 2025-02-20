@@ -31,6 +31,9 @@ Sistem manajemen inventaris berbasis Flask untuk mengelola barang dengan lebih a
 
 <img src="static/img/pl.png" alt="Flowchart">
 
+## Link Dokumentasi
+
+[Watch the video on YouTube](https://youtu.be/0HCdrFM5Nas)
 
 ## Installation & Configuration
 
