@@ -84,15 +84,25 @@ class Barang:
     @staticmethod
     def pinjam_barang(kode, jumlah, peminjam):
         db = Database()
-        # Kurangi jumlah barang
-        db.cursor.execute("UPDATE barang SET jumlah = jumlah - %s WHERE kode = %s AND jumlah >= %s", (jumlah, kode, jumlah))
-        if db.cursor.rowcount > 0:
-            # Simpan data peminjaman jika barang tersedia
+        
+        # Periksa apakah stok cukup
+        db.cursor.execute("SELECT jumlah FROM barang WHERE kode = %s", (kode,))
+        stok_sekarang = db.cursor.fetchone()[0]
+        
+        if stok_sekarang >= jumlah:
+            # Kurangi stok barang
+            db.cursor.execute("UPDATE barang SET jumlah = jumlah - %s WHERE kode = %s", (jumlah, kode))
+            
+            # Simpan data peminjaman
             db.cursor.execute(
-                "INSERT INTO pinjam (kode_barang, jumlah, peminjam, status) VALUES (%s, %s, %s, 'Dipinjam')",
-                (kode, jumlah, peminjam)
+                "INSERT INTO peminjam (nama_peminjam, nama_barang_dipinjam, jumlah_barang_dipinjam, nomor_telepon, identitas, tanggal_pinjam, tanggal_kembali) VALUES (%s, %s, %s, '-', '-', NOW(), DATE_ADD(NOW(), INTERVAL 7 DAY))",
+                (peminjam, kode, jumlah)
             )
+            
             db.connection.commit()
+        else:
+            flash('Stok tidak mencukupi!', 'error')
+
         db.close()
         
     @staticmethod

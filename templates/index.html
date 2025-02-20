@@ -39,7 +39,7 @@
             <img src="{{ barang[5] }}" alt="Gambar Barang" class="img-thumbnail" width="50" />
           </td>
           <td class="text-center">
-            <span class="badge {% if barang[6] == 'Dipinjam' %}bg-danger{% else %}bg-success{% endif %}"> {{ barang[6] }} </span>
+            <span class="badge {% if barang[6] == 1 %}bg-danger{% else %}bg-success{% endif %}"> {{ "Dipinjam" if barang[6] == 1 else "Tersedia" }} </span>
           </td>
           <td class="text-center">
             <a href="{{ url_for('barang_controller.update', kode=barang[1]) }}" class="btn btn-warning btn-sm">✏️ Edit</a>
@@ -48,10 +48,11 @@
             </form>
           </td>
           <td class="text-center">
-            <form action="/pinjam" method="POST">
-              <input type="hidden" name="kode" value="{{ barang[1] }}" />
-              <input type="number" name="jumlah" min="1" max="{{ barang[3] }}" required />
-              <button type="submit" class="btn btn-primary btn-sm">📥 Pinjam</button>
+            <form action="{{ url_for('barang_controller.pinjam_barang', kode=barang[1]) }}" class="d-flex justify-content-center" method="POST">
+              <div class="input-group">
+                <input type="number" name="jumlah_pinjam" min="1" max="{{ barang[3] }}" required class="form-control form-control-sm" />
+                <button type="submit" class="btn btn-primary btn-sm">Pinjam</button>
+              </div>
             </form>
           </td>
         </tr>
