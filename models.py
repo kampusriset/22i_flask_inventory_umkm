@@ -85,15 +85,13 @@ class Barang:
     def pinjam_barang(kode, jumlah, peminjam):
         db = Database()
         
-        # Periksa apakah stok cukup
         db.cursor.execute("SELECT jumlah FROM barang WHERE kode = %s", (kode,))
         stok_sekarang = db.cursor.fetchone()[0]
         
         if stok_sekarang >= jumlah:
-            # Kurangi stok barang
+
             db.cursor.execute("UPDATE barang SET jumlah = jumlah - %s WHERE kode = %s", (jumlah, kode))
-            
-            # Simpan data peminjaman
+
             db.cursor.execute(
                 "INSERT INTO peminjam (nama_peminjam, nama_barang_dipinjam, jumlah_barang_dipinjam, nomor_telepon, identitas, tanggal_pinjam, tanggal_kembali) VALUES (%s, %s, %s, '-', '-', NOW(), DATE_ADD(NOW(), INTERVAL 7 DAY))",
                 (peminjam, kode, jumlah)

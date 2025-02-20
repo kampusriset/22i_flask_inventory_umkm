@@ -132,8 +132,6 @@ def pinjam_barang(kode):
     peminjam = session['username'] 
 
     Barang.pinjam_barang(kode, jumlah_pinjam, peminjam)
-
-    flash(f'Berhasil meminjam {jumlah_pinjam} unit barang!', 'success')
     return redirect(url_for('barang_controller.index'))
 
 @barang_controller.route('/peminjam', methods=['GET', 'POST'])
