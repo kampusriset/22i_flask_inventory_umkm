@@ -13,8 +13,11 @@ def dashboard():
     if 'username' not in session:
         return redirect(url_for('barang_controller.login'))
     
-    barangs_dipinjam = Barang.get_barang_by_status('Dipinjam')
-    return render_template('dashboard.html', barangs=barangs_dipinjam)
+    total_jenis = Barang.get_total_jenis_barang()[0]['jumlah_jenis_barang']
+    total_barang_tersedia = Barang.get_total_barang_tersedia()[0]['total_barang_tersedia']
+    total_barang_dipinjam = Barang.get_barang_dipinjam()[0]['barang_dipinjam']
+    barang_dipinjam = Barang.get_barang_by_status("Dipinjam")
+    return render_template('dashboard.html', total_jenis=total_jenis, barang_tersedia=total_barang_tersedia, barang_dipinjam=total_barang_dipinjam, barangs = barang_dipinjam)
 
 
 @barang_controller.route('/barang')
@@ -141,4 +144,26 @@ def kelola_peminjam():
 @barang_controller.route('/selesai_pinjam/<string:id_peminjam>', methods=['POST'])
 def selesai_pinjam(id_peminjam):
     Peminjam.selesai_pinjam(id_peminjam)
-    return redirect(url_for('barang_controller.peminjam'))
+    return redirect(url_for('barang_controller.kelola_peminjam'))
+
+@barang_controller.route('/update_peminjam/<string:id_peminjam>', methods=['GET', 'POST'])
+def update_peminjam(id_peminjam):
+    peminjam = Peminjam.get_peminjam(id_peminjam)
+    barang_tersedia = Barang.get_barang_tersedia() 
+
+    if request.method == 'POST':
+        nm_peminjam = request.form['nama_peminjam']
+        nm_brg = request.form['nama_barang_dipinjam']
+        jml_brg = request.form['jumlah_barang_dipinjam']
+        nmr_telp = request.form['nomor_telepon']
+        tgl_pinjam = request.form['tanggal_pinjam']
+        tgl_kembali = request.form['tanggal_kembali']
+
+        file_identitas = request.files['identitas']
+        identitas = file_identitas.filename if file_identitas.filename else peminjam['identitas'] 
+
+        updated_peminjam = Peminjam(nm_peminjam, nm_brg, jml_brg, nmr_telp, identitas, tgl_pinjam, tgl_kembali)
+        Peminjam.update_peminjam(id_peminjam, updated_peminjam)
+        return redirect(url_for('barang_controller.kelola_peminjam'))
+
+    return render_template('update_peminjam.html', peminjam=peminjam, barang_tersedia=barang_tersedia)

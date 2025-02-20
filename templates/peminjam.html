@@ -1,13 +1,14 @@
 {% extends "base.html" %} {% block title %} Kelola Peminjam {% endblock title %} {% block content %}
 <div class="container mt-5">
-  <h2 class="mt-5">😊 Data Peminjam Barang</h2>
+  <h2 class="mt-5 mb-5 text-center">😊 Data Peminjam Barang</h2>
   <table class="table table-bordered mt-3">
     <thead>
-      <tr>
+      <tr class="text-center">
         <th>Nama Peminjam</th>
         <th>Nama Barang</th>
         <th>Jumlah Barang Dipinjam</th>
         <th>Nomor Telepon</th>
+        <th>Identitas</th>
         <th>Tanggal Pinjam</th>
         <th>Tanggal Kembali</th>
         <th>Aksi</th>
@@ -20,11 +21,12 @@
         <td>{{ peminjam.nama_barang_dipinjam }}</td>
         <td>{{ peminjam.jumlah_barang_dipinjam }}</td>
         <td>{{ peminjam.nomor_telepon }}</td>
+        <td>{{ peminjam.identitas }}</td>
         <td>{{ peminjam.tanggal_pinjam }}</td>
         <td>{{ peminjam.tanggal_kembali }}</td>
-        <td>
-          <a href="" class="btn btn-secondary">Ubah</a>
-          <form action="{{ url_for('barang_controller.selesai_pinjam', id_peminjam=peminjam.id) }}" method="POST" style="display: inline">
+        <td class="text-center">
+          <a href="{{ url_for('barang_controller.update_peminjam', id_peminjam=peminjam.id_peminjam) }}" class="btn btn-secondary mb-3">Ubah</a>
+          <form action="{{ url_for('barang_controller.selesai_pinjam', id_peminjam=peminjam.id_peminjam) }}" method="POST" style="display: inline">
             <button type="submit" class="btn btn-danger btn-sm">✅ Selesai</button>
           </form>
         </td>
@@ -33,44 +35,78 @@
     </tbody>
   </table>
 
-  <h2 class="mt-5 mb-3 text-center">Tambah Peminjam</h2>
-  <form action="{{ url_for('barang_controller.kelola_peminjam') }}" method="POST" class="mb-5" enctype="multipart/form-data">
-    <div class="mb-3">
-      <label for="nama_peminjam" class="form-label fw-bold">Nama Peminjam</label>
-      <input type="text" class="form-control" id="nama_peminjam" name="nama_peminjam" required />
-    </div>
-    <div class="mb-3">
-      <label for="nama_barang_dipinjam" class="form-label fw-bold">Nama Barang</label>
-      <select name="nama_barang_dipinjam" id="nama_barang_dipinjam" class="form-select">
-        <option value="" disabled selected>-- Pilih Barang --</option>
-        {% for barang in barang_tersedia %}
-        <option value="{{ barang.nama }}">{{ barang.nama }} (Tersisa: {{ barang.jumlah }})</option>
-        {% endfor %}
-      </select>
-    </div>
-    <div class="mb-3">
-      <label for="jumlah_barang_dipinjam" class="form-label fw-bold">Jumlah Barang</label>
-      <input type="text" class="form-control" id="jumlah_barang_dipinjam" name="jumlah_barang_dipinjam" required />
-    </div>
-    <div class="mb-3">
-      <label for="nomor_telepon" class="form-label fw-bold">Nomor Telepon</label>
-      <input type="number" class="form-control" id="nomor_telepon" name="nomor_telepon" required />
-    </div>
-    <div class="mb-3">
-      <label for="identitas" class="form-label fw-bold">Foto Identitas</label>
-      <input type="file" class="form-control" id="identitas" name="identitas" accept="image/*" required />
-    </div>
-    <div class="mb-3">
-      <label for="tanggal_pinjam" class="form-label fw-bold">Tanggal Pinjam</label>
-      <input type="date" class="form-control" id="tanggal_pinjam" name="tanggal_pinjam" required />
-    </div>
-    <div class="mb-3">
-      <label for="tanggal_kembali" class="form-label fw-bold">Tanggal Kembali</label>
-      <input type="date" class="form-control" id="tanggal_kembali" name="tanggal_kembali" required />
-    </div>
-    <button type="submit" class="btn btn-success">Simpan</button>
+  <div class="d-flex justify-content-between mt-4">
+    <button class="btn btn-primary" id="toggleForm">➕ Tambah Peminjam</button>
     <a href="{{ url_for('barang_controller.dashboard') }}" class="btn btn-secondary">Kembali ke Daftar Barang</a>
-  </form>
+  </div>
+  <div id="formContainer" class="slide-hidden">
+    <form action="{{ url_for('barang_controller.kelola_peminjam') }}" method="POST" class="mb-5" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label for="nama_peminjam" class="form-label fw-bold">Nama Peminjam</label>
+        <input type="text" class="form-control" id="nama_peminjam" name="nama_peminjam" required />
+      </div>
+      <div class="mb-3">
+        <label for="nama_barang_dipinjam" class="form-label fw-bold">Nama Barang</label>
+        <select name="nama_barang_dipinjam" id="nama_barang_dipinjam" class="form-select">
+          <option value="" disabled selected>-- Pilih Barang --</option>
+          {% for barang in barang_tersedia %}
+          <option value="{{ barang.nama }}">{{ barang.nama }} (Tersisa: {{ barang.jumlah }})</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="jumlah_barang_dipinjam" class="form-label fw-bold">Jumlah Barang</label>
+        <input type="text" class="form-control" id="jumlah_barang_dipinjam" name="jumlah_barang_dipinjam" required />
+      </div>
+      <div class="mb-3">
+        <label for="nomor_telepon" class="form-label fw-bold">Nomor Telepon</label>
+        <input type="number" class="form-control" id="nomor_telepon" name="nomor_telepon" required />
+      </div>
+      <div class="mb-3">
+        <label for="identitas" class="form-label fw-bold">Foto Identitas</label>
+        <input type="file" class="form-control" id="identitas" name="identitas" accept="image/*" required />
+      </div>
+      <div class="mb-3">
+        <label for="tanggal_pinjam" class="form-label fw-bold">Tanggal Pinjam</label>
+        <input type="date" class="form-control" id="tanggal_pinjam" name="tanggal_pinjam" required />
+      </div>
+      <div class="mb-3">
+        <label for="tanggal_kembali" class="form-label fw-bold">Tanggal Kembali</label>
+        <input type="date" class="form-control" id="tanggal_kembali" name="tanggal_kembali" required />
+      </div>
+      <button type="submit" class="btn btn-success">Simpan</button>
+      <a href="{{ url_for('barang_controller.dashboard') }}" class="btn btn-secondary">Kembali ke Daftar Barang</a>
+    </form>
+  </div>
 </div>
 
+<style>
+  #formContainer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out;
+  }
+
+  .slide-visible {
+    max-height: 800px; /* Sesuaikan dengan tinggi konten */
+  }
+</style>
+
+<script>
+  document.getElementById("toggleForm").addEventListener("click", function () {
+    var formContainer = document.getElementById("formContainer");
+
+    if (formContainer.classList.contains("slide-visible")) {
+      formContainer.classList.remove("slide-visible");
+      setTimeout(() => {
+        formContainer.style.maxHeight = "0px";
+      }, 10);
+      this.textContent = "➕ Tambah Peminjam";
+    } else {
+      formContainer.classList.add("slide-visible");
+      formContainer.style.maxHeight = formContainer.scrollHeight + "px";
+      this.textContent = "❌ Tutup Form";
+    }
+  });
+</script>
 {% endblock content %}

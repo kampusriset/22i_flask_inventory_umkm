@@ -1,0 +1,66 @@
+{% extends "base.html" %} {% block title %} Update Peminjam {% endblock title %} {% block content %}
+
+<div class="container mt-5 mb-5">
+  <form action="{{ url_for('barang_controller.update_peminjam', id_peminjam=peminjam.id_peminjam) }}" method="POST" class="mb-5" enctype="multipart/form-data">
+  
+    <!-- Nama Peminjam -->
+    <div class="mb-3">
+      <label for="nama_peminjam" class="form-label fw-bold">Nama Peminjam</label>
+      <input type="text" class="form-control" id="nama_peminjam" name="nama_peminjam"
+       value="{{ peminjam.nama_peminjam }}" required />
+
+    </div>
+  
+    <!-- Nama Barang -->
+    <div class="mb-3">
+      <label for="nama_barang_dipinjam" class="form-label fw-bold">Nama Barang</label>
+      <select name="nama_barang_dipinjam" id="nama_barang_dipinjam" class="form-select">
+        <option value="" disabled>-- Pilih Barang --</option>
+        {% for barang in barang_tersedia %}
+            <option value="{{ barang.nama }}" {% if barang.nama == peminjam.nama_barang_dipinjam %}selected{% endif %}>
+                {{ barang.nama }} (Tersisa: {{ barang.jumlah }})
+            </option>
+        {% endfor %}
+    </select>
+    </div>
+  
+    <!-- Jumlah Barang -->
+    <div class="mb-3">
+      <label for="jumlah_barang_dipinjam" class="form-label fw-bold">Jumlah Barang</label>
+      <input type="text" class="form-control" id="jumlah_barang_dipinjam" name="jumlah_barang_dipinjam" value="{{ peminjam.jumlah_barang_dipinjam }}" required />
+    </div>
+  
+    <!-- Nomor Telepon -->
+    <div class="mb-3">
+      <label for="nomor_telepon" class="form-label fw-bold">Nomor Telepon</label>
+      <input type="number" class="form-control" id="nomor_telepon" name="nomor_telepon" value="{{ peminjam.nomor_telepon }}" required />
+    </div>
+  
+    <!-- Foto Identitas -->
+    <div class="mb-3">
+      <label for="identitas" class="form-label fw-bold">Foto Identitas</label>
+      <input type="file" class="form-control" id="identitas" name="identitas" accept="image/*" />
+      {% if peminjam.identitas %}
+        <p class="mt-2">Identitas Saat Ini: <a href="{{ url_for('static', filename='uploads/' + peminjam.identitas) }}" target="_blank">{{ peminjam.identitas }}</a></p>
+      {% endif %}
+    </div>
+  
+    <!-- Tanggal Pinjam -->
+    <div class="mb-3">
+      <label for="tanggal_pinjam" class="form-label fw-bold">Tanggal Pinjam</label>
+      <input type="date" class="form-control" id="tanggal_pinjam" name="tanggal_pinjam" value="{{ peminjam.tanggal_pinjam }}" required />
+    </div>
+  
+    <!-- Tanggal Kembali -->
+    <div class="mb-3">
+      <label for="tanggal_kembali" class="form-label fw-bold">Tanggal Kembali</label>
+      <input type="date" class="form-control" id="tanggal_kembali" name="tanggal_kembali" value="{{ peminjam.tanggal_kembali }}" required />
+    </div>
+  
+    <!-- Tombol Simpan -->
+    <button type="submit" class="btn btn-success">Update</button>
+    <a href="{{ url_for('barang_controller.kelola_peminjam') }}" class="btn btn-secondary">Kembali ke Daftar Peminjam</a>
+  
+  </form>
+</div>
+{% endblock content %}

@@ -6,6 +6,7 @@ class Database:
         self.connection = MySQLdb.connect(
             host='localhost',
             user='root',
+            port=3308,
             password='',
             database='inventory_ukm'
         )
@@ -109,6 +110,27 @@ class Barang:
         data = db.fetch_as_dict(query)
         db.close()
         return data
+    
+    def get_total_jenis_barang():
+        db = Database()
+        query = "SELECT COUNT(DISTINCT nama) AS jumlah_jenis_barang FROM barang;";
+        data = db.fetch_as_dict(query)
+        db.close()
+        return data
+    
+    def get_total_barang_tersedia():
+        db = Database()
+        query = "SELECT COUNT(DISTINCT jumlah) AS total_barang_tersedia FROM barang WHERE status = 'Tersedia';"
+        data = db.fetch_as_dict(query)
+        db.close()
+        return data
+    
+    def get_barang_dipinjam():
+        db= Database()
+        query = "SELECT COUNT(DISTINCT nama) AS barang_dipinjam FROM barang WHERE status = 'Dipinjam'"
+        data = db.fetch_as_dict(query)
+        db.close
+        return data
 
 
 class User:
@@ -179,10 +201,22 @@ class Peminjam:
     @staticmethod
     def get_peminjam(id_peminjam):
         db = Database()
-        db.cursor.execute("SELECT * FROM peminjam WHERE id_peminjam = %s", (id_peminjam))
-        peminjam = db.cursor.fetchone()
+        db.cursor.execute("SELECT * FROM peminjam WHERE id_peminjam = %s", (id_peminjam,))
+        row = db.cursor.fetchone()
         db.close()
-        return peminjam
+
+        if row:
+            return {
+                'id_peminjam': row[0],
+                'nama_peminjam': row[1],
+                'nama_barang_dipinjam': row[2],
+                'jumlah_barang_dipinjam': row[3],
+                'nomor_telepon': row[4],
+                'identitas': row[5],
+                'tanggal_pinjam': row[6],
+                'tanggal_kembali': row[7]
+            }
+        return None
 
     @staticmethod
     def create_peminjam(peminjam):
@@ -195,15 +229,15 @@ class Peminjam:
     @staticmethod
     def update_peminjam(id_peminjam, peminjam):
         db = Database()
-        db.cursor.execute("UPDATE peminjam SET nama = %s, jumlah = %s, kondisi = %s, gambar = %s, boleh_dipinjam = %s, status = %s WHERE kode = %s",
-                          (peminjam.nama, peminjam.jumlah, peminjam.kondisi, peminjam.gambar, peminjam.boleh_dipinjam, peminjam.status, kode))
+        db.cursor.execute("UPDATE peminjam SET nama_peminjam = %s, nama_barang_dipinjam = %s, jumlah_barang_dipinjam = %s, nomor_telepon = %s, identitas = %s, tanggal_pinjam = %s, tanggal_kembali = %s WHERE id_peminjam = %s",
+                          (peminjam.nm_peminjam, peminjam.nm_brg, peminjam.jml_brg, peminjam.nmr_telp, peminjam.identitas, peminjam.tgl_pinjam, peminjam.tgl_kembali, id_peminjam))
         db.connection.commit()
         db.close()
 
     @staticmethod
     def selesai_pinjam(id_peminjam):
         db = Database()
-        db.cursor.execute("DELETE FROM barang WHERE kode = %s", (id_peminjam,))
+        db.cursor.execute("DELETE FROM peminjam WHERE id_peminjam = %s", (id_peminjam,))
         db.connection.commit()
         db.close()
         
