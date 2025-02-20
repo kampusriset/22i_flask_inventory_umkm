@@ -25,7 +25,7 @@
           <th>Gambar</th>
           <th>Status</th>
           <th>Aksi</th>
-          <th>Pinjam</th>
+          <!-- <th>Pinjam</th> -->
         </tr>
       </thead>
       <tbody>
@@ -47,13 +47,13 @@
               <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus barang ini?')">🗑️ Hapus</button>
             </form>
           </td>
-          <td class="text-center">
+          <!-- <td class="text-center">
             <form action="/pinjam" method="POST">
               <input type="hidden" name="kode" value="{{ barang[1] }}" />
               <input type="number" name="jumlah" min="1" max="{{ barang[3] }}" required />
               <button type="submit" class="btn btn-primary btn-sm">📥 Pinjam</button>
             </form>
-          </td>
+          </td> -->
         </tr>
         {% endfor %}
       </tbody>

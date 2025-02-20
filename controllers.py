@@ -1,5 +1,6 @@
 from flask import Blueprint, flash, render_template, request, redirect, session, url_for
 from models import Barang, Database, User, Peminjam
+from flask import request, jsonify
 
 barang_controller = Blueprint('barang_controller', __name__)
 
@@ -142,3 +143,19 @@ def kelola_peminjam():
 def selesai_pinjam(id_peminjam):
     Peminjam.selesai_pinjam(id_peminjam)
     return redirect(url_for('barang_controller.peminjam'))
+
+@barang_controller.route('/pinjam', methods=['POST'])
+def pinjam_barang():
+    kode = request.form['kode']
+    jumlah = int(request.form['jumlah'])
+    peminjam = "User123"  # Gantilah dengan sistem autentikasi user
+
+    Barang.pinjam_barang(kode, jumlah, peminjam)
+
+    # Ambil jumlah terbaru
+    db = Database()
+    db.cursor.execute("SELECT jumlah FROM barang WHERE kode = %s", (kode,))
+    new_jumlah = db.cursor.fetchone()[0]
+    db.close()
+
+    return jsonify({"success": True, "new_jumlah": new_jumlah})
